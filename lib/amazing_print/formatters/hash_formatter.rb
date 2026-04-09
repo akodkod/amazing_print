@@ -147,10 +147,14 @@ module AmazingPrint
       end
 
       def formatted_hash_key(key, width)
-        return align(key, width) if options[:align_delimiter] != false
+        return align(key, width) if align_delimiter?
         return key unless options[:multiline]
 
         options[:indent].negative? ? "#{indent(indentation + options[:indent])}#{key}" : "#{indent}#{key}"
+      end
+
+      def align_delimiter?
+        options.fetch(:align_delimiter, true)
       end
 
       def format_key(key)
