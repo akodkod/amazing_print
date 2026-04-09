@@ -127,7 +127,7 @@ module AmazingPrint
         formatted_key = json_awesome(key, is_key: true)
         formatted_value = json_awesome(value)
 
-        "#{align(formatted_key, width)}#{colorize(': ', :hash)}#{formatted_value}"
+        "#{formatted_hash_key(formatted_key, width)}#{colorize(': ', :hash)}#{formatted_value}"
       end
 
       def ruby19_syntax(key, value, width)
@@ -137,13 +137,20 @@ module AmazingPrint
         key_string = key.inspect.include?('"') ? key.inspect.sub(':', '') : key.to_s
         awesome_key = format_key(key).sub(/#{Regexp.escape(key.inspect)}/, "#{key_string}:")
 
-        "#{align(awesome_key, width)} #{inspector.awesome(value)}"
+        "#{formatted_hash_key(awesome_key, width)} #{inspector.awesome(value)}"
       end
 
       def pre_ruby19_syntax(key, value, width)
         awesome_key = single_line { format_key(key) }
 
-        "#{align(awesome_key, width)}#{colorize(' => ', :hash)}#{inspector.awesome(value)}"
+        "#{formatted_hash_key(awesome_key, width)}#{colorize(' => ', :hash)}#{inspector.awesome(value)}"
+      end
+
+      def formatted_hash_key(key, width)
+        return align(key, width) unless options[:align_delimiter] == false
+        return key unless options[:multiline]
+
+        options[:indent].negative? ? "#{indent(indentation + options[:indent])}#{key}" : "#{indent}#{key}"
       end
 
       def format_key(key)
