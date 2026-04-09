@@ -466,7 +466,8 @@ RSpec.describe 'AmazingPrint' do
     end
 
     it 'does not align delimiters when align_delimiter is false for rocket hash format' do
-      expect(@hash.ai(colors: :none, hash_format: :rocket, align_delimiter: false)).to eq <<~EOS.strip
+      out = @hash.ai(colors: :none, hash_format: :rocket, align_delimiter: false)
+      expect(out).to eq <<~EOS.strip
         {
                 "b" => "b",
                 :a => "a",
@@ -474,6 +475,8 @@ RSpec.describe 'AmazingPrint' do
                 "alpha" => "alpha"
         }
       EOS
+      expect(out).not_to match(/"b"\s{2,}=>/)
+      expect(out).not_to match(/:a\s{2,}=>/)
     end
 
     it 'does not align delimiters when align_delimiter is false for symbol hash format' do
@@ -486,6 +489,7 @@ RSpec.describe 'AmazingPrint' do
           "magenta" => "rgb(255, 0, 255)"
         }
       EOS
+      expect(out).not_to match(/"magenta"\s{2,}=>/)
     end
   end
 
