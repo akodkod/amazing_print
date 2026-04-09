@@ -150,7 +150,8 @@ module AmazingPrint
         return align(key, width) if align_delimiter?
         return key unless options[:multiline]
 
-        options[:indent].negative? ? "#{indent(indentation + options[:indent])}#{key}" : "#{indent}#{key}"
+        indent_value = options[:indent].negative? ? indent(indentation + options[:indent]) : indent
+        "#{indent_value}#{key}"
       end
 
       def align_delimiter?
