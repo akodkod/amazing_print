@@ -150,12 +150,17 @@ module AmazingPrint
         return align(key, width) if align_delimiter?
         return key unless options[:multiline]
 
-        indent_value = options[:indent].negative? ? indent(indentation + options[:indent]) : indent
-        "#{indent_value}#{key}"
+        "#{unaligned_hash_key_indent}#{key}"
       end
 
       def align_delimiter?
         options.fetch(:align_delimiter, true)
+      end
+
+      def unaligned_hash_key_indent
+        return indent(indentation + options[:indent]) if options[:indent].negative?
+
+        indent
       end
 
       def format_key(key)

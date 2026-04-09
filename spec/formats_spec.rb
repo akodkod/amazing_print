@@ -475,6 +475,8 @@ RSpec.describe 'AmazingPrint' do
                 "alpha" => "alpha"
         }
       EOS
+      expect(out).to match(/"b" => "b"/)
+      expect(out).to match(/:a => "a"/)
       expect(out).not_to match(/"b"\s{2,}=>/)
       expect(out).not_to match(/:a\s{2,}=>/)
     end
